@@ -40,14 +40,16 @@ const OrderBookContractInstance = new web3.eth.Contract(OrderBook_ABI, OrderBook
 const USDCContractInstance = new web3.eth.Contract(USDC_ABI, USDC_ADDR);
 
 
-export async function approveAllowanceForPositionManager(amount = MAX_ALLOWANCE) {
+async function approveAllowanceForPositionManager(amount = MAX_ALLOWANCE) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		const amountToApprove = parseUnits(amount, 6);
 		await USDCContractInstance.methods.approve(PositionManager_ADDR, amountToApprove)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -55,14 +57,16 @@ export async function approveAllowanceForPositionManager(amount = MAX_ALLOWANCE)
 	}
 }
 
-export async function approveAllowanceForPositionRouter(amount = MAX_ALLOWANCE) {
+async function approveAllowanceForPositionRouter(amount = MAX_ALLOWANCE) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		const amountToApprove = parseUnits(amount, 6);
 		await USDCContractInstance.methods.approve(PositionRouter_ADDR, amountToApprove)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -70,14 +74,16 @@ export async function approveAllowanceForPositionRouter(amount = MAX_ALLOWANCE) 
 	}
 }
 
-export async function approveAllowanceForOrderBook(amount = MAX_ALLOWANCE) {
+async function approveAllowanceForOrderBook(amount = MAX_ALLOWANCE) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		const amountToApprove = parseUnits(amount, 6);
 		await USDCContractInstance.methods.approve(OrderBook_ADDR, amountToApprove)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -85,13 +91,15 @@ export async function approveAllowanceForOrderBook(amount = MAX_ALLOWANCE) {
 	}
 }
 
-export async function enableMarketOrder() {
+async function enableMarketOrder() {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PikaPerpV4ContractInstance.methods.setAccountManager(PositionManager_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -99,13 +107,15 @@ export async function enableMarketOrder() {
 	}
 }
 
-export async function enablePositionManager() {
+async function enablePositionManager() {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PositionManagerContractInstance.methods.setAccountManager(PositionRouter_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -113,13 +123,15 @@ export async function enablePositionManager() {
 	}
 }
 
-export async function enableOrderBook() {
+async function enableOrderBook() {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await OrderBookContractInstance.methods.setAccountManager(PositionRouter_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -127,13 +139,15 @@ export async function enableOrderBook() {
 	}
 }
 
-export async function enableLimitOrder() {
+async function enableLimitOrder() {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PikaPerpV4ContractInstance.methods.setAccountManager(OrderBook_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -150,20 +164,22 @@ function getPositionId(productId, isLong) {
 	return id.toString();
 }
 
-export async function getPosition(productId, isLong) {
+async function getPosition(productId, isLong) {
 	const id = getPositionId(productId, isLong);
 	const positionArr = await PikaPerpV4ContractInstance.methods.getPositions([id]).call();
 	return positionArr[0];
 }
 
-export async function openPosition(productId, isLong, leverage, margin, acceptablePrice, referralCode) {
+async function openPosition(productId, isLong, leverage, margin, acceptablePrice, referralCode) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PositionManagerContractInstance.methods.createOpenPosition(traderAddress, productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE, ethers.utils.hexZeroPad(referralCode, 32))
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				value: parseUnits(EXECUTION_FEE, 10),
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -171,7 +187,7 @@ export async function openPosition(productId, isLong, leverage, margin, acceptab
 	}
 }
 
-export async function createOpenMarketOrderWithCloseTriggerOrders(productId, isLong, leverage, margin, acceptablePrice, SLPrice, TPPrice, referralCode) {
+async function createOpenMarketOrderWithCloseTriggerOrders(productId, isLong, leverage, margin, acceptablePrice, SLPrice, TPPrice, referralCode) {
 	try {
 		let totalExecutionFee = EXECUTION_FEE;
 		if (SLPrice > 0 && TPPrice > 0) {
@@ -179,12 +195,14 @@ export async function createOpenMarketOrderWithCloseTriggerOrders(productId, isL
 		} else if (SLPrice > 0 || TPPrice > 0) {
 			totalExecutionFee = 2 * EXECUTION_FEE;
 		}
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PositionRouterContractInstance.methods.createOpenMarketOrderWithCloseTriggerOrders(productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE, parseUnits(SLPrice, 8), parseUnits(TPPrice, 8), ethers.utils.hexZeroPad(referralCode, 32))
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				value: parseUnits(totalExecutionFee, 10),
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -192,14 +210,16 @@ export async function createOpenMarketOrderWithCloseTriggerOrders(productId, isL
 	}
 }
 
-export async function openOrder(productId, isLong, leverage, margin, triggerPrice, triggerAboveThrehold) {
+async function openOrder(productId, isLong, leverage, margin, triggerPrice, triggerAboveThrehold) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await OrderBookContractInstance.methods.createOpenOrder(traderAddress, productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(triggerPrice, 8), triggerAboveThrehold, EXECUTION_FEE)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				value: parseUnits(EXECUTION_FEE, 10),
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -207,14 +227,16 @@ export async function openOrder(productId, isLong, leverage, margin, triggerPric
 	}
 }
 
-export async function createCloseOrder(productId, size, isLong, triggerPrice, triggerAboveThreshold) {
+async function createCloseOrder(productId, size, isLong, triggerPrice, triggerAboveThreshold) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		const res = await OrderBookContractInstance.methods.createCloseOrder(traderAddress, productId, parseUnits(size), isLong, parseUnits(triggerPrice, 8), triggerAboveThreshold)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				value: parseUnits(EXECUTION_FEE, 10),
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -222,14 +244,16 @@ export async function createCloseOrder(productId, size, isLong, triggerPrice, tr
 	}
 }
 
-export async function updateOrder(index, leverage, size, triggerPrice, triggerAboveThrehold, isOpen) {
+async function updateOrder(index, leverage, size, triggerPrice, triggerAboveThrehold, isOpen) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		if (isOpen == true) {
 			const res = await OrderBookContractInstance.methods.updateOpenOrder(index, leverage, parseUnits(triggerPrice, 8), triggerAboveThrehold)
 				.send({
 					from: traderAddress,
 					chainId: 10,
 					gas: GAS,
+					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
 		} else {
@@ -238,6 +262,7 @@ export async function updateOrder(index, leverage, size, triggerPrice, triggerAb
 					from: traderAddress,
 					chainId: 10,
 					gas: GAS,
+					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
 		}
@@ -246,14 +271,16 @@ export async function updateOrder(index, leverage, size, triggerPrice, triggerAb
 	}
 }
 
-export async function cancelOrder(orderType, index, isOpen) {
+async function cancelOrder(orderType, index, isOpen) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		if (isOpen) {
 			const res = await OrderBookContractInstance.methods.cancelOpenOrder(index)
 				.send({
 					from: traderAddress,
 					chainId: 10,
 					gas: GAS,
+					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
 		} else {
@@ -262,6 +289,7 @@ export async function cancelOrder(orderType, index, isOpen) {
 					from: traderAddress,
 					chainId: 10,
 					gas: GAS,
+					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
 		}
@@ -270,13 +298,15 @@ export async function cancelOrder(orderType, index, isOpen) {
 	}
 }
 
-export async function cancelOrderAll(openOrderIndexes, closeOrderIndexes) {
+async function cancelOrderAll(openOrderIndexes, closeOrderIndexes) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await OrderBookContractInstance.methods.cancelMultiple(openOrderIndexes, closeOrderIndexes)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -284,13 +314,15 @@ export async function cancelOrderAll(openOrderIndexes, closeOrderIndexes) {
 	}
 }
 
-export async function modifyMargin(positionId, margin, productId, shouldIncrease) {
+async function modifyMargin(positionId, margin, productId, shouldIncrease) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PikaPerpV4ContractInstance.methods.modifyMargin(positionId, parseUnits(margin, 8), shouldIncrease)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -298,14 +330,16 @@ export async function modifyMargin(positionId, margin, productId, shouldIncrease
 	}
 }
 
-export async function closePosition(productId, margin, isLong, acceptablePrice) {
+async function closePosition(productId, margin, isLong, acceptablePrice) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PositionManagerContractInstance.methods.createClosePosition(traderAddress, productId, parseUnits(margin), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE)
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				value: parseUnits(EXECUTION_FEE, 10),
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -313,7 +347,7 @@ export async function closePosition(productId, margin, isLong, acceptablePrice) 
 	}
 }
 
-export async function createCloseTriggerOrders(productId, margin, leverage, isLong, SLPrice, TPPrice) {
+async function createCloseTriggerOrders(productId, margin, leverage, isLong, SLPrice, TPPrice) {
 	try {
 		let totalExecutionFee = 0;
 		if (SLPrice > 0 && TPPrice > 0) {
@@ -321,12 +355,14 @@ export async function createCloseTriggerOrders(productId, margin, leverage, isLo
 		} else if (SLPrice > 0 || TPPrice > 0) {
 			totalExecutionFee = 1 * EXECUTION_FEE;
 		}
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await PositionRouterContractInstance.methods.createCloseTriggerOrders(productId, parseUnits(margin), parseUnits(leverage), isLong, EXECUTION_FEE, parseUnits(SLPrice, 8), parseUnits(TPPrice, 8))
 			.send({
 				from: traderAddress,
 				chainId: 10,
 				value: parseUnits(totalExecutionFee, 10),
 				gas: GAS,
+				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
 	} catch (error) {
@@ -334,16 +370,38 @@ export async function createCloseTriggerOrders(productId, margin, leverage, isLo
 	}
 }
 
-export async function approveAllowance(amount) {
+async function approveAllowance(amount) {
 	await approveAllowanceForPositionManager(amount)
 	await approveAllowanceForPositionRouter(amount)
 	await approveAllowanceForOrderBook(amount)
 }
 
-export async function enableTrading() {
+async function enableTrading() {
 	await enableMarketOrder()
 	await enablePositionManager()
 	await enableOrderBook()
 	await enableLimitOrder()
 }
 
+module.exports = {
+	approveAllowanceForPositionManager,
+	approveAllowanceForPositionRouter,
+	approveAllowanceForOrderBook,
+	enableMarketOrder,
+	enablePositionManager,
+	enableOrderBook,
+	enableLimitOrder,
+	getPosition,
+	openPosition,
+	createOpenMarketOrderWithCloseTriggerOrders,
+	openOrder,
+	createCloseOrder,
+	updateOrder,
+	cancelOrder,
+	cancelOrderAll,
+	modifyMargin,
+	closePosition,
+	createCloseTriggerOrders,
+	approveAllowance,
+	enableTrading
+};

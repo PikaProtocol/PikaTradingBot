@@ -15,7 +15,7 @@ const {
 } = require("./methods");
 
 approveAllowance(100)
-enableTrading()
+// enableTrading()
 
 // getPosition(1, false)
 // openPosition(1, true, 1, 30, 1850, '0x')
