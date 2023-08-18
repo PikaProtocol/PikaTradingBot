@@ -1,0 +1,225 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_positionManager",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_orderbook",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_pikaPerp",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_feeCalculator",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_collateralToken",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_tokenBase",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "BASE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "collateralToken",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_productId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_margin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_leverage",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_isLong",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_executionFee",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_stopLossPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_takeProfitPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "createCloseTriggerOrders",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_productId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_margin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_leverage",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_isLong",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_acceptablePrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_executionFee",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_stopLossPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_takeProfitPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_referralCode",
+				"type": "bytes32"
+			}
+		],
+		"name": "createOpenMarketOrderWithCloseTriggerOrders",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "feeCalculator",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "orderbook",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "pikaPerp",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "positionManager",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "tokenBase",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

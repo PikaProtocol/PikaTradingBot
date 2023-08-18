@@ -1,2 +1,1 @@
-# PikaTradingBot
-Sample trading bot for Pika v4
+# Pika-trading-bot
