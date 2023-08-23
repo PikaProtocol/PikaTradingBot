@@ -160,7 +160,6 @@ function getPositionId(productId, isLong) {
 		['address', 'uint256', 'bool'],
 		[traderAddress, productId, isLong]
 	), 0);
-	console.log(id)
 	return id.toString();
 }
 

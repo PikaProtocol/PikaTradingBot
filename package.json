@@ -1,5 +1,5 @@
 {
-  "name": "@pika/v1-sdk",
+  "name": "@pikaprotocol/v1-sdk",
   "version": "1.0.0",
   "description": "Pika bot",
   "main": "index.js",
