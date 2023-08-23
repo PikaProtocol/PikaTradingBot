@@ -1,20 +1,12 @@
-const {
-	approveAllowance,
-	enableTrading,
-	getPosition,
-	openPosition,
-	createOpenMarketOrderWithCloseTriggerOrders,
-	modifyMargin,
-	openOrder,
-	closePosition,
-	cancelOrder,
-	cancelOrderAll,
-	createCloseTriggerOrders,
-	createCloseOrder,
-	updateOrder
-} = require("./methods");
 
-approveAllowance(100)
+const methods = require('./methods');
+
+// Re-export everything from the 'methods' module
+module.exports = {
+  ...methods
+};
+
+// approveAllowance(100)
 // enableTrading()
 
 // getPosition(1, false)
