@@ -20,7 +20,7 @@ npm i @pikaprotocol/v1-sdk
 
 ### Simple SDK
 
-Can be created by providing `chainId` and either `axios` or `window.fetch` (or alternative `fetch` implementation). The resulting SDK will be able to use all methods that query the API.
+...
 
 ```js
   const PikaSDK = require("@ethandev0/v1-sdk")
