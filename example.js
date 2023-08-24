@@ -1,4 +1,4 @@
-const PikaSDK = require("@ethandev0/v1-sdk")
+const PikaSDK = require("@pikaprotocol/v1-sdk")
 
 const position = await PikaSDK.getPosition(1, false);
 
