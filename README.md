@@ -32,7 +32,7 @@ const position = await PikaSDK.getPosition(1, false);
 ### Partial SDK
 For bundle-size savvy developers, you can construct a lightweight version of the SDK and bring only the functions you need.
 
-e.g. for only getting rates and allowances:
+e.g. for only getting position:
 
 ```js
 const { 
