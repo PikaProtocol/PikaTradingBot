@@ -23,9 +23,9 @@ npm i @pikaprotocol/v1-sdk
 ...
 
 ```js
-  const PikaSDK = require("@ethandev0/v1-sdk")
+const PikaSDK = require("@pikaprotocol/v1-sdk")
 
-  const position = await PikaSDK.getPosition(1, false);
+const position = await PikaSDK.getPosition(1, false);
 
 ```
 
@@ -35,11 +35,11 @@ For bundle-size savvy developers, you can construct a lightweight version of the
 e.g. for only getting rates and allowances:
 
 ```js
-    const { 
-        getPosition
-    } = require("@ethandev0/v1-sdk");
+const { 
+    getPosition
+} = require("@pikaprotocol/v1-sdk");
 
-    const position = await getPosition(1, false);
+const position = await getPosition(1, false);
 ```
 
 Refer to [example.js](https://github.com/PikaProtocol/PikaTradingBot/example.js) for functions usage.
