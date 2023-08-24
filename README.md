@@ -42,7 +42,7 @@ const {
 const position = await getPosition(1, false);
 ```
 
-Refer to [example.js](https://github.com/PikaProtocol/PikaTradingBot/example.js) for functions usage.
+Refer to [example.js](https://github.com/PikaProtocol/PikaTradingBot/blob/master/example.js) for functions usage.
 
 ## env variable
 
