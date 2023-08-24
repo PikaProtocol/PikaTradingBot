@@ -4,7 +4,7 @@
   </a>
 </p>
 
-# SDK for Pika Protocol SDK
+# SDK for Pika Protocol
 
 Refer to the documentation of the Pika SDK
 ## Installing Pika Protocol SDK
