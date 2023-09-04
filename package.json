@@ -1,5 +1,5 @@
 {
-  "name": "@pikaprotocol/v1-sdk",
+  "name": "@pikaprotocol/sdk",
   "version": "1.0.0",
   "description": "Pika bot",
   "main": "src/index.js",
@@ -10,6 +10,7 @@
   "author": "ethandev0",
   "license": "ISC",
   "dependencies": {
+    "@pikaprotocol/sdk": "^1.0.0",
     "bignumber.js": "^9.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
