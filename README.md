@@ -10,8 +10,8 @@ Refer to the documentation of the Pika SDK
 ## Installing Pika Protocol SDK
 
 ```bash
-yarn add @pikaprotocol/v1-sdk
-npm i @pikaprotocol/v1-sdk
+yarn add @pikaprotocol/sdk
+npm i @pikaprotocol/sdk
 ```
 
 ## Using Pika Protocol SDK
@@ -23,7 +23,7 @@ npm i @pikaprotocol/v1-sdk
 ...
 
 ```js
-const PikaSDK = require("@pikaprotocol/v1-sdk")
+const PikaSDK = require("@pikaprotocol/sdk")
 
 const position = await PikaSDK.getPosition(1, false);
 
@@ -37,7 +37,7 @@ e.g. for only getting position:
 ```js
 const { 
     getPosition
-} = require("@pikaprotocol/v1-sdk");
+} = require("@pikaprotocol/sdk");
 
 const position = await getPosition(1, false);
 ```
