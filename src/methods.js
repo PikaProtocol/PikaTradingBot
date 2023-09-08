@@ -40,6 +40,23 @@ const OrderBookContractInstance = new web3.eth.Contract(OrderBook_ABI, OrderBook
 const USDCContractInstance = new web3.eth.Contract(USDC_ABI, USDC_ADDR);
 
 
+async function approveAllowanceForPerp(amount = MAX_ALLOWANCE) {
+	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
+		const amountToApprove = parseUnits(amount, 6);
+		await USDCContractInstance.methods.approve(PikaPerpV4_ADDR, amountToApprove)
+			.send({
+				from: traderAddress,
+				chainId: 10,
+				gas: GAS,
+				nouce: nouce + 1,
+				maxPriorityFeePerGas: 3
+			})
+	} catch (error) {
+		console.log('error---', error)
+	}
+}
+
 async function approveAllowanceForPositionManager(amount = MAX_ALLOWANCE) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
@@ -370,6 +387,7 @@ async function createCloseTriggerOrders(productId, margin, leverage, isLong, SLP
 }
 
 async function approveAllowance(amount) {
+	await approveAllowanceForPerp(amount)
 	await approveAllowanceForPositionManager(amount)
 	await approveAllowanceForPositionRouter(amount)
 	await approveAllowanceForOrderBook(amount)
@@ -383,6 +401,7 @@ async function enableTrading() {
 }
 
 module.exports = {
+	approveAllowanceForPerp,
 	approveAllowanceForPositionManager,
 	approveAllowanceForPositionRouter,
 	approveAllowanceForOrderBook,
