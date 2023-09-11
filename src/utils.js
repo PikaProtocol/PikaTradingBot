@@ -7,6 +7,10 @@ function parseUnits(number, units = 8) {
 	}
 	return ethers.utils.parseUnits(number, units || 8);
 }
+function formatUnits(number, units) {
+	return ethers.utils.formatUnits(number || 0, units || 8);
+}
 module.exports = {
-	parseUnits
+	parseUnits,
+	formatUnits
 }

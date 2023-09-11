@@ -2,11 +2,13 @@ const PikaSDK = require("@pikaprotocol/sdk")
 
 async function run(){
     const position = await PikaSDK.getPosition(1, false);
-    console.log(position)
 }
 run();
 
 //available functions
+
+//getMarkPrice(1) //(productId)
+
 // approveAllowance(100) //(approve amount)
 // enableTrading()
 

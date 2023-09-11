@@ -1,14 +1,20 @@
 require("dotenv").config();
 const Web3 = require("web3");
 const { ethers } = require("ethers");
+const { EvmPriceServiceConnection } = require("@pythnetwork/pyth-evm-js")
 const privateKey = process.env.PRIVATE_KEY;
 const traderAddress = process.env.TRADER_ADDRESS;
 const rpc = process.env.RPC_URL;
 const MAX_ALLOWANCE = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 const EXECUTION_FEE = 25000;
+const PYTH_MAX_TIMEOUT = 3000;
+const PYTH_MAX_RETRIES = 5;
+const PYTH_ENDPOINT = "https://hermes.pyth.network";
 const {
 	parseUnits,
+	formatUnits
 } = require("./utils");
+const { Products, PYTH_PRICE_IDs} = require('./constants');
 
 const GAS = 800000;
 const web3 = new Web3(new Web3.providers.HttpProvider(rpc));
@@ -39,6 +45,24 @@ const PositionRouterContractInstance = new web3.eth.Contract(PositionRouter_ABI,
 const OrderBookContractInstance = new web3.eth.Contract(OrderBook_ABI, OrderBook_ADDR);
 const USDCContractInstance = new web3.eth.Contract(USDC_ABI, USDC_ADDR);
 
+async function getMarkPrice(productId){
+	if(!Products[productId]) {
+		console.log('unknown product id');
+		return;
+	}
+	const priceID = PYTH_PRICE_IDs[Products[productId]];
+	const pythConnection = new EvmPriceServiceConnection(PYTH_ENDPOINT, {
+        httpRetries: PYTH_MAX_RETRIES,
+        timeout: PYTH_MAX_TIMEOUT,
+    });
+    const priceFeeds = await pythConnection.getLatestPriceFeeds([priceID]);
+	if(priceFeeds.length > 0){
+		return formatUnits(priceFeeds[0]['price']['price']);
+	} else{
+		console.log("unknown price id");
+		return;
+	}
+}
 
 async function approveAllowanceForPerp(amount = MAX_ALLOWANCE) {
 	try {
@@ -401,6 +425,7 @@ async function enableTrading() {
 }
 
 module.exports = {
+	getMarkPrice,
 	approveAllowanceForPerp,
 	approveAllowanceForPositionManager,
 	approveAllowanceForPositionRouter,
