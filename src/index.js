@@ -6,6 +6,8 @@ module.exports = {
   ...methods
 };
 
+// getMarkPrice(1);
+
 // approveAllowance(100)
 // enableTrading()
 

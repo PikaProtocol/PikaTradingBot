@@ -1,5 +1,6 @@
 require("dotenv").config();
 const Web3 = require("web3");
+const axios = require("axios");
 const { ethers } = require("ethers");
 const { EvmPriceServiceConnection } = require("@pythnetwork/pyth-evm-js")
 const privateKey = process.env.PRIVATE_KEY;
@@ -14,10 +15,11 @@ const {
 	parseUnits,
 	formatUnits
 } = require("./utils");
-const { Products, PYTH_PRICE_IDs} = require('./constants');
 
 const GAS = 800000;
 const web3 = new Web3(new Web3.providers.HttpProvider(rpc));
+
+const resourceURL = "https://raw.githubusercontent.com/PikaProtocol/PikaTradingSDK/master/priceFeeds.json";
 
 web3.eth.accounts.wallet.add({
 	privateKey: privateKey,
@@ -45,20 +47,34 @@ const PositionRouterContractInstance = new web3.eth.Contract(PositionRouter_ABI,
 const OrderBookContractInstance = new web3.eth.Contract(OrderBook_ABI, OrderBook_ADDR);
 const USDCContractInstance = new web3.eth.Contract(USDC_ABI, USDC_ADDR);
 
-async function getMarkPrice(productId){
-	if(!Products[productId]) {
+async function getMarkPrice(productId) {
+	let products;
+	const response = await axios.get(resourceURL);
+	if (response.status === 200) {
+		products = response.data;
+	} else {
+		throw new Error('Error: Unable to retrieve data from the URL.');
+	}
+	let product;
+	for (const key in products) {
+		if (products[key].productId == productId) {
+			product = products[key];
+		}
+	}
+	if (!product) {
 		console.log('unknown product id');
 		return;
 	}
-	const priceID = PYTH_PRICE_IDs[Products[productId]];
+	const priceID = product.pythFeed;
 	const pythConnection = new EvmPriceServiceConnection(PYTH_ENDPOINT, {
-        httpRetries: PYTH_MAX_RETRIES,
-        timeout: PYTH_MAX_TIMEOUT,
-    });
-    const priceFeeds = await pythConnection.getLatestPriceFeeds([priceID]);
-	if(priceFeeds.length > 0){
+		httpRetries: PYTH_MAX_RETRIES,
+		timeout: PYTH_MAX_TIMEOUT,
+	});
+	const priceFeeds = await pythConnection.getLatestPriceFeeds([priceID]);
+	if (priceFeeds.length > 0) {
+		console.log(formatUnits(priceFeeds[0]['price']['price']))
 		return formatUnits(priceFeeds[0]['price']['price']);
-	} else{
+	} else {
 		console.log("unknown price id");
 		return;
 	}
