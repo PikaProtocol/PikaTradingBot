@@ -12,6 +12,7 @@
   "dependencies": {
     "@pikaprotocol/sdk": "^1.0.0",
     "@pythnetwork/pyth-evm-js": "^1.25.0",
+    "axios": "^1.5.0",
     "bignumber.js": "^9.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
