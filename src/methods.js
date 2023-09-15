@@ -72,7 +72,6 @@ async function getMarkPrice(productId) {
 	});
 	const priceFeeds = await pythConnection.getLatestPriceFeeds([priceID]);
 	if (priceFeeds.length > 0) {
-		console.log(formatUnits(priceFeeds[0]['price']['price']))
 		return formatUnits(priceFeeds[0]['price']['price']);
 	} else {
 		console.log("unknown price id");
@@ -266,7 +265,7 @@ async function createOpenMarketOrderWithCloseTriggerOrders(productId, isLong, le
 	}
 }
 
-async function openOrder(productId, isLong, leverage, margin, triggerPrice, triggerAboveThrehold) {
+async function createOpenOrder(productId, isLong, leverage, margin, triggerPrice, triggerAboveThrehold) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await OrderBookContractInstance.methods.createOpenOrder(traderAddress, productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(triggerPrice, 8), triggerAboveThrehold, EXECUTION_FEE)
@@ -450,10 +449,11 @@ module.exports = {
 	enablePositionManager,
 	enableOrderBook,
 	enableLimitOrder,
+	getPositionId,
 	getPosition,
 	openPosition,
 	createOpenMarketOrderWithCloseTriggerOrders,
-	openOrder,
+	createOpenOrder,
 	createCloseOrder,
 	updateOrder,
 	cancelOrder,

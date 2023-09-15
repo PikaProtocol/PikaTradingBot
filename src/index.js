@@ -11,6 +11,7 @@ module.exports = {
 // approveAllowance(100)
 // enableTrading()
 
+//getPositionId(1, true)
 // getPosition(1, false)
 // openPosition(1, true, 1, 30, 1850, '0x')
 // createOpenMarketOrderWithCloseTriggerOrders(1, true, 100, 100, 1850, 1500, 2000, '0x')
