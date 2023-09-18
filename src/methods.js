@@ -7,7 +7,7 @@ const privateKey = process.env.PRIVATE_KEY;
 const traderAddress = process.env.TRADER_ADDRESS;
 const rpc = process.env.RPC_URL;
 const MAX_ALLOWANCE = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
-const EXECUTION_FEE = 25000;
+const EXECUTION_FEE = process.env.EXECUTION_FEE;
 const PYTH_MAX_TIMEOUT = 3000;
 const PYTH_MAX_RETRIES = 5;
 const PYTH_ENDPOINT = "https://hermes.pyth.network";
@@ -20,6 +20,8 @@ const GAS = 800000;
 const web3 = new Web3(new Web3.providers.HttpProvider(rpc));
 
 const resourceURL = "https://raw.githubusercontent.com/PikaProtocol/PikaTradingSDK/master/priceFeeds.json";
+
+const graph_url = "https://api.thegraph.com/subgraphs/name/ethandev0/pikaperpv4_optimism";
 
 web3.eth.accounts.wallet.add({
 	privateKey: privateKey,
@@ -242,6 +244,41 @@ async function openPosition(productId, isLong, leverage, margin, acceptablePrice
 	}
 }
 
+async function getActiveOrders(){
+	const response = await fetch(graph_url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			query: `
+				query {
+					orders(
+					  first: 1000
+					  where: {account: "${traderAddress.toLocaleLowerCase()}", status: "open"}
+					) {
+					  account
+					  createdTimestamp
+					  isLong
+					  isOpen
+					  leverage
+					  margin
+					  size
+					  status
+					  productId
+					  triggerAboveThreshold
+					  triggerPrice
+					  type
+					  index
+					}
+				  }
+			`
+		})
+	});
+	const json = await response.json();
+	return json.data.orders;
+}
+
 async function createOpenMarketOrderWithCloseTriggerOrders(productId, isLong, leverage, margin, acceptablePrice, SLPrice, TPPrice, referralCode) {
 	try {
 		let totalExecutionFee = EXECUTION_FEE;
@@ -326,7 +363,7 @@ async function updateOrder(index, leverage, size, triggerPrice, triggerAboveThre
 	}
 }
 
-async function cancelOrder(orderType, index, isOpen) {
+async function cancelOrder(index, isOpen) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		if (isOpen) {
@@ -353,8 +390,34 @@ async function cancelOrder(orderType, index, isOpen) {
 	}
 }
 
-async function cancelOrderAll(openOrderIndexes, closeOrderIndexes) {
+async function cancelMultipleOrders(openOrderIndexes, closeOrderIndexes) {
 	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
+		await OrderBookContractInstance.methods.cancelMultiple(openOrderIndexes, closeOrderIndexes)
+			.send({
+				from: traderAddress,
+				chainId: 10,
+				gas: GAS,
+				nouce: nouce + 1,
+				maxPriorityFeePerGas: 3
+			})
+	} catch (error) {
+		console.log('error---', error)
+	}
+}
+
+async function cancelAllOrders() {
+	try {
+		const orders = await getActiveOrders();
+		let openOrderIndexes = [];
+		let closeOrderIndexes = [];
+		orders.map((order) => {
+			if(order.isOpen){
+				openOrderIndexes.push(order.index)
+			} else{
+				closeOrderIndexes.push(order.index)
+			}
+		})
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		await OrderBookContractInstance.methods.cancelMultiple(openOrderIndexes, closeOrderIndexes)
 			.send({
@@ -452,12 +515,14 @@ module.exports = {
 	getPositionId,
 	getPosition,
 	openPosition,
+	getActiveOrders,
 	createOpenMarketOrderWithCloseTriggerOrders,
 	createOpenOrder,
 	createCloseOrder,
 	updateOrder,
 	cancelOrder,
-	cancelOrderAll,
+	cancelMultipleOrders,
+	cancelAllOrders,
 	modifyMargin,
 	closePosition,
 	createCloseTriggerOrders,
