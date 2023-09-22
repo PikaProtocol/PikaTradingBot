@@ -162,5 +162,13 @@
   "XAGUSD": {
     "productId": 41,
     "pythFeed": "0xf2fb02c32b055c805e7238d628e5e9dadef274376114eb1f012337cabe93871e"
-  }
+  },
+  "DOTUSD": {
+    "productId": 42,
+    "pythFeed": "0xca3eed9b267293f6595901c734c7525ce8ef49adafe8284606ceb307afa2ca5b"
+  },
+   "SUIUSD": {
+    "productId": 43,
+    "pythFeed": "0x23d7315113f5b1d3ba7a83604c44b94d79f4fd69af77f804fc7f920a6dc65744"
+  } 
 }
