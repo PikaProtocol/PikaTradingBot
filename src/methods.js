@@ -81,11 +81,11 @@ async function getMarkPrice(productId) {
 	}
 }
 
-async function approveAllowanceForPerp(amount = MAX_ALLOWANCE) {
+async function approveAllowanceForPerp(amount) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		const amountToApprove = parseUnits(amount, 6);
-		await USDCContractInstance.methods.approve(PikaPerpV4_ADDR, amountToApprove)
+		const amountToApprove = amount > 0 ? parseUnits(amount, 6) : MAX_ALLOWANCE;
+		const tx = await USDCContractInstance.methods.approve(PikaPerpV4_ADDR, amountToApprove)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -93,16 +93,17 @@ async function approveAllowanceForPerp(amount = MAX_ALLOWANCE) {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('approveAllowanceForPerp succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('approveAllowanceForPerp failed---', error)
 	}
 }
 
-async function approveAllowanceForPositionManager(amount = MAX_ALLOWANCE) {
+async function approveAllowanceForPositionManager(amount) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		const amountToApprove = parseUnits(amount, 6);
-		await USDCContractInstance.methods.approve(PositionManager_ADDR, amountToApprove)
+		const amountToApprove = amount > 0 ? parseUnits(amount, 6) : MAX_ALLOWANCE;
+		const tx = await USDCContractInstance.methods.approve(PositionManager_ADDR, amountToApprove)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -110,16 +111,17 @@ async function approveAllowanceForPositionManager(amount = MAX_ALLOWANCE) {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('approveAllowanceForPositionManager succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('approveAllowanceForPositionManager failed---', error)
 	}
 }
 
-async function approveAllowanceForPositionRouter(amount = MAX_ALLOWANCE) {
+async function approveAllowanceForPositionRouter(amount) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		const amountToApprove = parseUnits(amount, 6);
-		await USDCContractInstance.methods.approve(PositionRouter_ADDR, amountToApprove)
+		const amountToApprove = amount > 0 ? parseUnits(amount, 6) : MAX_ALLOWANCE;
+		const tx = await USDCContractInstance.methods.approve(PositionRouter_ADDR, amountToApprove)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -127,16 +129,17 @@ async function approveAllowanceForPositionRouter(amount = MAX_ALLOWANCE) {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('approveAllowanceForPositionRouter succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('approveAllowanceForPositionRouter failed---', error)
 	}
 }
 
-async function approveAllowanceForOrderBook(amount = MAX_ALLOWANCE) {
+async function approveAllowanceForOrderBook(amount) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		const amountToApprove = parseUnits(amount, 6);
-		await USDCContractInstance.methods.approve(OrderBook_ADDR, amountToApprove)
+		const amountToApprove = amount > 0 ? parseUnits(amount, 6) : MAX_ALLOWANCE;
+		const tx = await USDCContractInstance.methods.approve(OrderBook_ADDR, amountToApprove)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -144,15 +147,16 @@ async function approveAllowanceForOrderBook(amount = MAX_ALLOWANCE) {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('approveAllowanceForOrderBook succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('approveAllowanceForOrderBook failed---', error)
 	}
 }
 
 async function enableMarketOrder() {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PikaPerpV4ContractInstance.methods.setAccountManager(PositionManager_ADDR, true)
+		const tx = await PikaPerpV4ContractInstance.methods.setAccountManager(PositionManager_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -160,15 +164,16 @@ async function enableMarketOrder() {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('enableMarketOrder succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('enableMarketOrder failed---', error)
 	}
 }
 
 async function enablePositionManager() {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PositionManagerContractInstance.methods.setAccountManager(PositionRouter_ADDR, true)
+		const tx = await PositionManagerContractInstance.methods.setAccountManager(PositionRouter_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -176,15 +181,16 @@ async function enablePositionManager() {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('enablePositionManager succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('enablePositionManager failed---', error)
 	}
 }
 
 async function enableOrderBook() {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await OrderBookContractInstance.methods.setAccountManager(PositionRouter_ADDR, true)
+		const tx = await OrderBookContractInstance.methods.setAccountManager(PositionRouter_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -192,15 +198,16 @@ async function enableOrderBook() {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('enableOrderBook succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('enableOrderBook failed---', error)
 	}
 }
 
 async function enableLimitOrder() {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PikaPerpV4ContractInstance.methods.setAccountManager(OrderBook_ADDR, true)
+		const tx = await PikaPerpV4ContractInstance.methods.setAccountManager(OrderBook_ADDR, true)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -208,26 +215,27 @@ async function enableLimitOrder() {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('enableLimitOrder succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('enableLimitOrder failed---', error)
 	}
 }
 
-function getPositionId(productId, isLong) {
+function getPositionId(address, productId, isLong) {
 	const id = ethers.utils.formatUnits(ethers.utils.solidityKeccak256(
 		['address', 'uint256', 'bool'],
-		[traderAddress, productId, isLong]
+		[address, productId, isLong]
 	), 0);
 	return id.toString();
 }
 
 async function getPosition(productId, isLong) {
-	const id = getPositionId(productId, isLong);
+	const id = getPositionId(traderAddress, productId, isLong);
 	const positionArr = await PikaPerpV4ContractInstance.methods.getPositions([id]).call();
 	return positionArr[0];
 }
 
-async function getPositionIds() {
+async function getPositionIds(address) {
 	let products = {};
 	const productIds = [];
 	const positionIds = [];
@@ -243,33 +251,48 @@ async function getPositionIds() {
 		}
 	}
 	for (const productId of productIds) {
-		positionIds.push(getPositionId(productId, true));
-		positionIds.push(getPositionId(productId, false));
+		positionIds.push(getPositionId(address, productId, true));
+		positionIds.push(getPositionId(address, productId, false));
 	}
 	return positionIds;
 }
 
 async function getActivePositions() {
 	try {
-		let positionIds = await getPositionIds();
+		let positionIds = await getPositionIds(traderAddress);
 		if (!positionIds.length) return;
 		// unique
 		positionIds = positionIds.filter((value, index, self) => {
 			return self.indexOf(value) === index;
 		});
-		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		let positions = await PikaPerpV4ContractInstance.methods.getPositions(positionIds).call();
 		positions = positions.filter(item => item.productId && parseInt(item.productId) > 0);
 		return positions
 	} catch (error) {
-		console.log('error---', error)
+		console.log('getActivePositions failed---', error)
+	}
+}
+
+async function getActivePositionsFor(address) {
+	try {
+		let positionIds = await getPositionIds(address);
+		if (!positionIds.length) return;
+		// unique
+		positionIds = positionIds.filter((value, index, self) => {
+			return self.indexOf(value) === index;
+		});
+		let positions = await PikaPerpV4ContractInstance.methods.getPositions(positionIds).call();
+		positions = positions.filter(item => item.productId && parseInt(item.productId) > 0);
+		return positions
+	} catch (error) {
+		console.log('getActivePositionsFor failed---', error)
 	}
 }
 
 async function openPosition(productId, isLong, leverage, margin, acceptablePrice, referralCode) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PositionManagerContractInstance.methods.createOpenPosition(traderAddress, productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE, ethers.utils.hexZeroPad(referralCode, 32))
+		const tx = await PositionManagerContractInstance.methods.createOpenPosition(traderAddress, productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE, ethers.utils.hexZeroPad(referralCode, 32))
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -278,8 +301,9 @@ async function openPosition(productId, isLong, leverage, margin, acceptablePrice
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('openPosition succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('openPosition failed---', error)
 	}
 }
 
@@ -318,6 +342,41 @@ async function getActiveOrders(){
 	return json.data.orders;
 }
 
+async function getActiveOrdersFor(address){
+	const response = await fetch(graph_url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			query: `
+				query {
+					orders(
+					  first: 1000
+					  where: {account: "${address.toLocaleLowerCase()}", status: "open"}
+					) {
+					  account
+					  createdTimestamp
+					  isLong
+					  isOpen
+					  leverage
+					  margin
+					  size
+					  status
+					  productId
+					  triggerAboveThreshold
+					  triggerPrice
+					  type
+					  index
+					}
+				  }
+			`
+		})
+	});
+	const json = await response.json();
+	return json.data.orders;
+}
+
 async function createOpenMarketOrderWithCloseTriggerOrders(productId, isLong, leverage, margin, acceptablePrice, SLPrice, TPPrice, referralCode) {
 	try {
 		let totalExecutionFee = EXECUTION_FEE;
@@ -327,7 +386,7 @@ async function createOpenMarketOrderWithCloseTriggerOrders(productId, isLong, le
 			totalExecutionFee = 2 * EXECUTION_FEE;
 		}
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PositionRouterContractInstance.methods.createOpenMarketOrderWithCloseTriggerOrders(productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE, parseUnits(SLPrice, 8), parseUnits(TPPrice, 8), ethers.utils.hexZeroPad(referralCode, 32))
+		const tx = await PositionRouterContractInstance.methods.createOpenMarketOrderWithCloseTriggerOrders(productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE, parseUnits(SLPrice, 8), parseUnits(TPPrice, 8), ethers.utils.hexZeroPad(referralCode, 32))
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -336,15 +395,16 @@ async function createOpenMarketOrderWithCloseTriggerOrders(productId, isLong, le
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('createOpenMarketOrderWithCloseTriggerOrders succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('createOpenMarketOrderWithCloseTriggerOrders failed---', error)
 	}
 }
 
 async function createOpenOrder(productId, isLong, leverage, margin, triggerPrice, triggerAboveThrehold) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await OrderBookContractInstance.methods.createOpenOrder(traderAddress, productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(triggerPrice, 8), triggerAboveThrehold, EXECUTION_FEE)
+		const tx = await OrderBookContractInstance.methods.createOpenOrder(traderAddress, productId, parseUnits(margin, 8), parseUnits(leverage), isLong, parseUnits(triggerPrice, 8), triggerAboveThrehold, EXECUTION_FEE)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -353,15 +413,16 @@ async function createOpenOrder(productId, isLong, leverage, margin, triggerPrice
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('createOpenOrder succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('createOpenOrder failed---', error)
 	}
 }
 
 async function createCloseOrder(productId, size, isLong, triggerPrice, triggerAboveThreshold) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		const res = await OrderBookContractInstance.methods.createCloseOrder(traderAddress, productId, parseUnits(size), isLong, parseUnits(triggerPrice, 8), triggerAboveThreshold)
+		const tx = await OrderBookContractInstance.methods.createCloseOrder(traderAddress, productId, parseUnits(size), isLong, parseUnits(triggerPrice, 8), triggerAboveThreshold)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -370,8 +431,9 @@ async function createCloseOrder(productId, size, isLong, triggerPrice, triggerAb
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('createCloseOrder succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('createCloseOrder failed---', error)
 	}
 }
 
@@ -379,7 +441,7 @@ async function updateOrder(index, leverage, size, triggerPrice, triggerAboveThre
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		if (isOpen == true) {
-			const res = await OrderBookContractInstance.methods.updateOpenOrder(index, leverage, parseUnits(triggerPrice, 8), triggerAboveThrehold)
+			const tx = await OrderBookContractInstance.methods.updateOpenOrder(index, leverage, parseUnits(triggerPrice, 8), triggerAboveThrehold)
 				.send({
 					from: traderAddress,
 					chainId: 10,
@@ -387,8 +449,9 @@ async function updateOrder(index, leverage, size, triggerPrice, triggerAboveThre
 					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
+			console.log('updateOrder succeeded---', tx.transactionHash)
 		} else {
-			const res = await OrderBookContractInstance.methods.updateCloseOrder(index, size, parseUnits(triggerPrice, 8), triggerAboveThrehold)
+			const tx = await OrderBookContractInstance.methods.updateCloseOrder(index, size, parseUnits(triggerPrice, 8), triggerAboveThrehold)
 				.send({
 					from: traderAddress,
 					chainId: 10,
@@ -396,9 +459,10 @@ async function updateOrder(index, leverage, size, triggerPrice, triggerAboveThre
 					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
+			console.log('updateOrder succeeded---', tx.transactionHash)
 		}
 	} catch (error) {
-		console.log('error---', error)
+		console.log('updateOrder failed---', error)
 	}
 }
 
@@ -406,7 +470,7 @@ async function cancelOrder(index, isOpen) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
 		if (isOpen) {
-			const res = await OrderBookContractInstance.methods.cancelOpenOrder(index)
+			const tx = await OrderBookContractInstance.methods.cancelOpenOrder(index)
 				.send({
 					from: traderAddress,
 					chainId: 10,
@@ -414,8 +478,9 @@ async function cancelOrder(index, isOpen) {
 					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
+			console.log('cancelOrder succeeded---', tx.transactionHash)
 		} else {
-			const res = await OrderBookContractInstance.methods.cancelCloseOrder(traderAddress, index)
+			const tx = await OrderBookContractInstance.methods.cancelCloseOrder(traderAddress, index)
 				.send({
 					from: traderAddress,
 					chainId: 10,
@@ -423,16 +488,17 @@ async function cancelOrder(index, isOpen) {
 					nouce: nouce + 1,
 					maxPriorityFeePerGas: 3
 				})
+			console.log('cancelOrder succeeded---', tx.transactionHash)
 		}
 	} catch (error) {
-		console.log('error---', error)
+		console.log('cancelOrder failed---', error)
 	}
 }
 
 async function cancelMultipleOrders(openOrderIndexes, closeOrderIndexes) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await OrderBookContractInstance.methods.cancelMultiple(openOrderIndexes, closeOrderIndexes)
+		const tx = await OrderBookContractInstance.methods.cancelMultiple(openOrderIndexes, closeOrderIndexes)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -440,8 +506,9 @@ async function cancelMultipleOrders(openOrderIndexes, closeOrderIndexes) {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('cancelMultipleOrders succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('cancelMultipleOrders failed---', error)
 	}
 }
 
@@ -458,7 +525,7 @@ async function cancelAllOrders() {
 			}
 		})
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await OrderBookContractInstance.methods.cancelMultiple(openOrderIndexes, closeOrderIndexes)
+		const tx = await OrderBookContractInstance.methods.cancelMultiple(openOrderIndexes, closeOrderIndexes)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -466,15 +533,16 @@ async function cancelAllOrders() {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('cancelAllOrders succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('cancelAllOrders failed---', error)
 	}
 }
 
 async function modifyMargin(positionId, margin, productId, shouldIncrease) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PikaPerpV4ContractInstance.methods.modifyMargin(positionId, parseUnits(margin, 8), shouldIncrease)
+		const tx = await PikaPerpV4ContractInstance.methods.modifyMargin(positionId, parseUnits(margin, 8), shouldIncrease)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -482,15 +550,16 @@ async function modifyMargin(positionId, margin, productId, shouldIncrease) {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('modifyMargin succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('modifyMargin failed---', error)
 	}
 }
 
 async function closePosition(productId, margin, isLong, acceptablePrice) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PositionManagerContractInstance.methods.createClosePosition(traderAddress, productId, parseUnits(margin), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE)
+		const tx = await PositionManagerContractInstance.methods.createClosePosition(traderAddress, productId, parseUnits(margin), isLong, parseUnits(acceptablePrice, 8), EXECUTION_FEE)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -499,8 +568,9 @@ async function closePosition(productId, margin, isLong, acceptablePrice) {
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('closePosition succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('closePosition failed---', error)
 	}
 }
 
@@ -513,7 +583,7 @@ async function createCloseTriggerOrders(productId, margin, leverage, isLong, SLP
 			totalExecutionFee = 1 * EXECUTION_FEE;
 		}
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		await PositionRouterContractInstance.methods.createCloseTriggerOrders(productId, parseUnits(margin), parseUnits(leverage), isLong, EXECUTION_FEE, parseUnits(SLPrice, 8), parseUnits(TPPrice, 8))
+		const tx = await PositionRouterContractInstance.methods.createCloseTriggerOrders(productId, parseUnits(margin), parseUnits(leverage), isLong, EXECUTION_FEE, parseUnits(SLPrice, 8), parseUnits(TPPrice, 8))
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -522,8 +592,9 @@ async function createCloseTriggerOrders(productId, margin, leverage, isLong, SLP
 				nouce: nouce + 1,
 				maxPriorityFeePerGas: 3
 			})
+		console.log('createCloseTriggerOrders succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('error---', error)
+		console.log('createCloseTriggerOrders failed---', error)
 	}
 }
 
@@ -554,8 +625,10 @@ module.exports = {
 	getPositionId,
 	getPosition,
 	getActivePositions,
+	getActivePositionsFor,
 	openPosition,
 	getActiveOrders,
+	getActiveOrdersFor,
 	createOpenMarketOrderWithCloseTriggerOrders,
 	createOpenOrder,
 	createCloseOrder,

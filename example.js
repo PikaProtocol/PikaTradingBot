@@ -1,13 +1,14 @@
 const PikaSDK = require("@pikaprotocol/sdk")
 
 async function run(){
-    const position = await PikaSDK.getPosition(1, true);
+    // const position = await PikaSDK.getPosition(1, true);
+    console.log( await PikaSDK.getMarkPrice(1))
 }
 run();
 
-//available functions
+// available functions
 
-//getMarkPrice(1) //(productId)
+// getMarkPrice(1) //(productId)
 
 // approveAllowance(100) //(approve amount)
 // enableTrading()
@@ -18,6 +19,9 @@ run();
 // createOpenMarketOrderWithCloseTriggerOrders(1, true, 100, 100, 1850, 1500, 2000, '0x') //(productId, isLong, leverage, margin, acceptablePrice, SLPrice, TPPrice, referralCode)
 // modifyMargin(1, 30, 1, true) //(positionId, margin, productId, shouldIncrease)
 // getActiveOrders()
+// getActiveOrders(0xaaa...) //(address)
+// getActivePositions()
+// getActivePositionsFor(0xaaa...) //(address)
 // createOpenOrder(1, false, 1, 30, 2000, true) //(productId, isLong, leverage, margin, triggerPrice, triggerAboveThrehold)
 // closePosition(1, 30, true, 1850) //(productId, margin, isLong, acceptablePrice)
 // cancelOrder(0, true) //(index, isOpen)
