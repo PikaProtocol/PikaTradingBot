@@ -16,7 +16,7 @@ const {
 	formatUnits
 } = require("./utils");
 
-const GAS = 800000;
+const GAS = 1000000;
 const web3 = new Web3(new Web3.providers.HttpProvider(rpc));
 
 const resourceURL = "https://raw.githubusercontent.com/PikaProtocol/PikaTradingSDK/master/priceFeeds.json";
@@ -225,6 +225,45 @@ async function getPosition(productId, isLong) {
 	const id = getPositionId(productId, isLong);
 	const positionArr = await PikaPerpV4ContractInstance.methods.getPositions([id]).call();
 	return positionArr[0];
+}
+
+async function getPositionIds() {
+	let products = {};
+	const productIds = [];
+	const positionIds = [];
+	const response = await axios.get(resourceURL);
+	if (response.status === 200) {
+		products = response.data;
+	} else {
+		throw new Error('Error: Unable to retrieve data from the URL.');
+	}
+	for (const key in products) {
+		if (products.hasOwnProperty(key)) {
+			productIds.push(products[key].productId);
+		}
+	}
+	for (const productId of productIds) {
+		positionIds.push(getPositionId(productId, true));
+		positionIds.push(getPositionId(productId, false));
+	}
+	return positionIds;
+}
+
+async function getActivePositions() {
+	try {
+		let positionIds = await getPositionIds();
+		if (!positionIds.length) return;
+		// unique
+		positionIds = positionIds.filter((value, index, self) => {
+			return self.indexOf(value) === index;
+		});
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
+		let positions = await PikaPerpV4ContractInstance.methods.getPositions(positionIds).call();
+		positions = positions.filter(item => item.productId && parseInt(item.productId) > 0);
+		return positions
+	} catch (error) {
+		console.log('error---', error)
+	}
 }
 
 async function openPosition(productId, isLong, leverage, margin, acceptablePrice, referralCode) {
@@ -514,6 +553,7 @@ module.exports = {
 	enableLimitOrder,
 	getPositionId,
 	getPosition,
+	getActivePositions,
 	openPosition,
 	getActiveOrders,
 	createOpenMarketOrderWithCloseTriggerOrders,

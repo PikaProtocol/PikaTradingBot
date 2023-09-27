@@ -13,6 +13,7 @@ module.exports = {
 
 //getPositionId(1, true)
 // getPosition(1, false)
+//getActivePositions()
 // openPosition(1, true, 1, 30, 1850, '0x')
 // createOpenMarketOrderWithCloseTriggerOrders(1, true, 100, 100, 1850, 1500, 2000, '0x')
 // modifyMargin(1, 30, 1, true)

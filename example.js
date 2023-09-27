@@ -1,7 +1,7 @@
 const PikaSDK = require("@pikaprotocol/sdk")
 
 async function run(){
-    const position = await PikaSDK.getPosition(1, false);
+    const position = await PikaSDK.getPosition(1, true);
 }
 run();
 
