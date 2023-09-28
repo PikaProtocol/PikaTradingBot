@@ -18,13 +18,22 @@ npm i @pikaprotocol/sdk
 
 ### Simple SDK
 
-Refer to [example.js](https://github.com/PikaProtocol/PikaTradingBot/blob/master/example.js) for more examples.
+Refer to [example.js](https://github.com/PikaProtocol/PikaTradingBot/blob/master/example.js) for more examples
 
 ```js
-const PikaSDK = require("@pikaprotocol/sdk")
+  const PikaSDK = require("@pikaprotocol/sdk")
 
-const position = await PikaSDK.getPosition(1, false);
+  // get current mark price of a productId
+  const markPrice = await pikaSDK.getMarkPrice(1)
 
+  // open a long ETH-USD position with 1x leverage and 30 USDC margin with 0.3% slippage allowance
+  await pikaSDK.openPosition(1, true, 1, 30, markPrice * (1 + 0.003), '0x')
+
+  // query all your active positions
+  const positions = await pikaSDK.getActivePositions()
+  
+  // close your entire long ETH position with 0.3% slippage allowance
+  await pikaSDK.closePosition(1, 30, true, markPrice * (1 - 0.003)) 
 ```
 
 ### Partial SDK
