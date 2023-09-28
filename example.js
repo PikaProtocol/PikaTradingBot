@@ -24,7 +24,7 @@ async function run(){
   // increase margin of your long ETH position by 30 USDC
   await pikaSDK.modifyMargin(pikaSDK.getPositionId(1, true), 30, 1, true) //(positionId, margin, shouldIncrease)
 
-  // close your entire long ETH position with 0.3% slippage. (the order will be cancelled if the executed price is below $1600)
+  // close your entire long ETH position with 0.3% slippage allowance
   await pikaSDK.closePosition(1, 60, true, markPrice * (1 - 0.003)) //(productId, margin, isLong, acceptablePrice)
 
   // create an open ETH long limit order which will trigger when the price falls below $1500
