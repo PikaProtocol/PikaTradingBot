@@ -437,32 +437,37 @@ async function createCloseOrder(productId, size, isLong, triggerPrice, triggerAb
 	}
 }
 
-async function updateOrder(index, leverage, size, triggerPrice, triggerAboveThrehold, isOpen) {
+async function updateOpenOrder(index, leverage, triggerPrice, triggerAboveThrehold) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		if (isOpen == true) {
-			const tx = await OrderBookContractInstance.methods.updateOpenOrder(index, leverage, parseUnits(triggerPrice, 8), triggerAboveThrehold)
-				.send({
-					from: traderAddress,
-					chainId: 10,
-					gas: GAS,
-					nouce: nouce + 1,
-					maxPriorityFeePerGas: 3
-				})
-			console.log('updateOrder succeeded---', tx.transactionHash)
-		} else {
-			const tx = await OrderBookContractInstance.methods.updateCloseOrder(index, size, parseUnits(triggerPrice, 8), triggerAboveThrehold)
-				.send({
-					from: traderAddress,
-					chainId: 10,
-					gas: GAS,
-					nouce: nouce + 1,
-					maxPriorityFeePerGas: 3
-				})
-			console.log('updateOrder succeeded---', tx.transactionHash)
-		}
+		const tx = await OrderBookContractInstance.methods.updateOpenOrder(index, leverage, parseUnits(triggerPrice, 8), triggerAboveThrehold)
+			.send({
+				from: traderAddress,
+				chainId: 10,
+				gas: GAS,
+				nouce: nouce + 1,
+				maxPriorityFeePerGas: 3
+			})
+		console.log('updateOpenOrder succeeded---', tx.transactionHash)
 	} catch (error) {
-		console.log('updateOrder failed---', error)
+		console.log('updateOpenOrder failed---', error)
+	}
+}
+
+async function updateCloseOrder(index, size, triggerPrice, triggerAboveThrehold) {
+	try {
+		const nouce = await web3.eth.getTransactionCount(traderAddress);
+		const tx = await OrderBookContractInstance.methods.updateCloseOrder(index, size, parseUnits(triggerPrice, 8), triggerAboveThrehold)
+			.send({
+				from: traderAddress,
+				chainId: 10,
+				gas: GAS,
+				nouce: nouce + 1,
+				maxPriorityFeePerGas: 3
+			})
+		console.log('updateCloseOrder succeeded---', tx.transactionHash)
+	} catch (error) {
+		console.log('updateCloseOrder failed---', error)
 	}
 }
 
@@ -632,7 +637,8 @@ module.exports = {
 	createOpenMarketOrderWithCloseTriggerOrders,
 	createOpenOrder,
 	createCloseOrder,
-	updateOrder,
+	updateOpenOrder,
+	updateCloseOrder,
 	cancelOrder,
 	cancelMultipleOrders,
 	cancelAllOrders,

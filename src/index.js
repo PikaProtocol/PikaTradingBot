@@ -27,4 +27,5 @@ module.exports = {
 // cancelAllOrders()
 // createCloseTriggerOrders(1, 30, 1, true, 1600, 2000)
 // createCloseOrder(1, 30, true, 2000, true)
-// updateOrder(1, 1, 30, 1850, true, true)
+// updateOpenOrder(1, 1, 1850, true, true)
+// updateCloseOrder(1, 30, 1850, true, true)

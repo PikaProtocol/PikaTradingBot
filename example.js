@@ -29,4 +29,5 @@ run();
 // cancelAllOrders()
 // createCloseTriggerOrders(1, 30, 1, true, 1600, 2000) //(productId, margin, leverage, isLong, SLPrice, TPPrice)
 // createCloseOrder(1, 30, true, 2000, true) //(productId, size, isLong, triggerPrice, triggerAboveThreshold)
-// updateOrder(1, 1, 30, 1850, true, true) //(index, leverage, size, triggerPrice, triggerAboveThrehold, isOpen)
+// updateOpenOrder(1, 1, 1850, true, true) //(index, leverage, triggerPrice, triggerAboveThrehold, isOpen)
+// updateCloseOrder(1, 30, 1850, true, true) //(index, size, triggerPrice, triggerAboveThrehold, isOpen)
