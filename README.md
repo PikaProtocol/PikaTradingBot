@@ -6,7 +6,6 @@
 
 # SDK for Pika Protocol
 
-Refer to the documentation of the Pika SDK
 ## Installing Pika Protocol SDK
 
 ```bash
@@ -20,7 +19,7 @@ npm i @pikaprotocol/sdk
 
 ### Simple SDK
 
-...
+Refer to [example.js](https://github.com/PikaProtocol/PikaTradingBot/blob/master/example.js) for more examples.
 
 ```js
 const PikaSDK = require("@pikaprotocol/sdk")
@@ -41,8 +40,6 @@ const {
 
 const position = await getPosition(1, false);
 ```
-
-Refer to [example.js](https://github.com/PikaProtocol/PikaTradingBot/blob/master/example.js) for functions usage.
 
 ## env variable
 
