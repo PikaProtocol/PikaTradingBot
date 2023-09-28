@@ -15,7 +15,6 @@ npm i @pikaprotocol/sdk
 
 ## Using Pika Protocol SDK
 
-...
 
 ### Simple SDK
 
