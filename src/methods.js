@@ -440,7 +440,7 @@ async function createCloseOrder(productId, size, isLong, triggerPrice, triggerAb
 async function updateOpenOrder(index, leverage, triggerPrice, triggerAboveThrehold) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		const tx = await OrderBookContractInstance.methods.updateOpenOrder(index, leverage, parseUnits(triggerPrice, 8), triggerAboveThrehold)
+		const tx = await OrderBookContractInstance.methods.updateOpenOrder(index, parseUnits(leverage, 8), parseUnits(triggerPrice, 8), triggerAboveThrehold)
 			.send({
 				from: traderAddress,
 				chainId: 10,
@@ -457,7 +457,7 @@ async function updateOpenOrder(index, leverage, triggerPrice, triggerAboveThreho
 async function updateCloseOrder(index, size, triggerPrice, triggerAboveThrehold) {
 	try {
 		const nouce = await web3.eth.getTransactionCount(traderAddress);
-		const tx = await OrderBookContractInstance.methods.updateCloseOrder(index, size, parseUnits(triggerPrice, 8), triggerAboveThrehold)
+		const tx = await OrderBookContractInstance.methods.updateCloseOrder(index, parseUnits(size, 8), parseUnits(triggerPrice, 8), triggerAboveThrehold)
 			.send({
 				from: traderAddress,
 				chainId: 10,
