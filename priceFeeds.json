@@ -170,5 +170,13 @@
    "SUIUSD": {
     "productId": 43,
     "pythFeed": "0x23d7315113f5b1d3ba7a83604c44b94d79f4fd69af77f804fc7f920a6dc65744"
+  },
+  "ADAUSD": {
+    "productId": 44,
+    "pythFeed": "0x2a01deaec9e51a579277b34b122399984d0bbf57e2458a7e42fecd2829867a0d"
+  },
+  "TONUSD": {
+    "productId": 45,
+    "pythFeed": "0x8963217838ab4cf5cadc172203c1f0b763fbaa45f346d8ee50ba994bbcac3026"
   } 
 }
