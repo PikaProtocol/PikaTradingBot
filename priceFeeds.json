@@ -178,5 +178,9 @@
   "TONUSD": {
     "productId": 45,
     "pythFeed": "0x8963217838ab4cf5cadc172203c1f0b763fbaa45f346d8ee50ba994bbcac3026"
+  },
+  "TIAUSD": {
+    "productId": 46,
+    "pythFeed": "0x09f7c1d7dfbb7df2b8fe3d3d87ee94a2259d212da4f30c1f0540d066dfa44723"
   } 
 }
