@@ -182,5 +182,9 @@
   "TIAUSD": {
     "productId": 46,
     "pythFeed": "0x09f7c1d7dfbb7df2b8fe3d3d87ee94a2259d212da4f30c1f0540d066dfa44723"
-  } 
+  },
+  "MEMEUSD": {
+    "productId": 47,
+    "pythFeed": "0xcd2cee36951a571e035db0dfad138e6ecdb06b517cc3373cd7db5d3609b7927c"
+  }
 }
