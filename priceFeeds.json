@@ -186,5 +186,9 @@
   "MEMEUSD": {
     "productId": 47,
     "pythFeed": "0xcd2cee36951a571e035db0dfad138e6ecdb06b517cc3373cd7db5d3609b7927c"
+  },
+  "RLBUSD": {
+    "productId": 48,
+    "pythFeed": "0x2f2d17abbc1e781bd87b4a5d52c8b2856886f5c482fa3593cebf6795040ab0b6"
   }
 }
