@@ -190,5 +190,9 @@
   "RLBUSD": {
     "productId": 48,
     "pythFeed": "0x2f2d17abbc1e781bd87b4a5d52c8b2856886f5c482fa3593cebf6795040ab0b6"
+  },
+  "PYTHUSD": {
+    "productId": 49,
+    "pythFeed": "0x0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff"
   }
 }
