@@ -194,5 +194,9 @@
   "PYTHUSD": {
     "productId": 49,
     "pythFeed": "0x0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff"
+  },
+  "ORDIUSD": {
+    "productId": 50,
+    "pythFeed": "0x193c739db502aadcef37c2589738b1e37bdb257d58cf1ab3c7ebc8e6df4e3ec0"
   }
 }
